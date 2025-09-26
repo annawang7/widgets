@@ -13,20 +13,18 @@ interface WidgetData {
 
 export default function Home() {
   const [widgets, setWidgets] = useState<WidgetData[]>([]);
-  const [widgetCounter, setWidgetCounter] = useState(0);
 
   const createWidget = () => {
     const newWidget: WidgetData = {
-      id: `widget-${widgetCounter}`,
+      id: `widget-${widgets.length + 1}`,
       x: Math.random() * (window.innerWidth - 400) + 50, // Random x position
       y: Math.random() * (window.innerHeight - 300) + 50, // Random y position
-      title: `Widget ${widgetCounter}`,
+      title: `Widget ${widgets.length + 1}`,
     };
 
     console.log("new widget made");
 
     setWidgets((prev) => [...prev, newWidget]);
-    setWidgetCounter((prev) => prev + 1);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -64,7 +62,7 @@ export default function Home() {
         </header>
 
         {/* Widgets container */}
-        <div className="relative w-full h-[calc(100vh-80px)]">
+        <div className="relative w-full h-[calc(100vh-80px)] flex items-center justify-center">
           {widgets.map((widget) => (
             <Widget
               key={widget.id}
@@ -74,11 +72,9 @@ export default function Home() {
               title={widget.title}
             />
           ))}
-        </div>
 
-        {/* Instructions */}
-        {widgets.length === 0 && (
-          <div className=" flex items-center justify-center">
+          {/* Instructions */}
+          {widgets.length === 0 && (
             <div className="text-center bg-white p-8 rounded-lg shadow-lg max-w-md">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">
                 Welcome to Widget Dashboard
@@ -87,13 +83,9 @@ export default function Home() {
                 Click &quot;Create Widget&quot; to add your first widget. You
                 can drag widgets around the screen to reposition them.
               </p>
-              <div className="text-sm text-gray-500">
-                Widgets are iframes with dummy content that you can move around
-                freely.
-              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </DndContext>
   );
